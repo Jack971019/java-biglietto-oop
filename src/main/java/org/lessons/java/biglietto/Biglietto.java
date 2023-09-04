@@ -2,7 +2,8 @@ package org.lessons.java.biglietto;
 
 import java.math.BigDecimal;
 
-public class biglietto {
+public class Biglietto {
+
 
     // ATTRIBUTI
 
@@ -10,15 +11,15 @@ public class biglietto {
 
     private int passengerAge;
 
-    final BigDecimal costoPerChilometro = new BigDecimal("0,21");
-    final BigDecimal scontoOver65 = new BigDecimal("0,40");
-    final BigDecimal scontoUnder18 = new BigDecimal("0,20");
+    final BigDecimal costoPerChilometro = BigDecimal.valueOf(0.21);
+    final BigDecimal scontoOver65 =BigDecimal.valueOf(0.6);
+    final BigDecimal scontoUnder18 = BigDecimal.valueOf(0.8);
 
 
 
     // COSTRUTTORI
 
-    public biglietto(int km, int passengerAge) {
+    public Biglietto(int km, int passengerAge) {
         if (km < 0){
             throw new RuntimeException();
         }
@@ -72,16 +73,21 @@ public class biglietto {
 
     // calcolare prezzo finale con lo sconto
 
-    private BigDecimal prezzoFinale(){
-        BigDecimal prezzo = BigDecimal.ZERO;
-        if(passengerAge > 65){
-            prezzo = costoPerChilometro.multiply(new BigDecimal(km)).multiply(scontoOver65);
-        } else if(passengerAge < 18){
-            prezzo = costoPerChilometro.multiply(new BigDecimal(km)).multiply(scontoUnder18);
-        } else {
-            prezzo = costoPerChilometro.multiply(new BigDecimal(km));
+    public BigDecimal prezzoFinale(){
+        BigDecimal prezzo = costoPerChilometro.multiply(BigDecimal.valueOf(km));
+        return prezzo.multiply(sconto());
+    }
+
+    // calcolare lo sconto
+
+    private BigDecimal sconto(){
+        BigDecimal sconto = BigDecimal.valueOf(1);
+        if (passengerAge < 18){
+            sconto = scontoUnder18;
+        } else if (passengerAge > 65 ) {
+            sconto = scontoOver65;
         }
-        return prezzo;
+        return sconto;
     }
 
 
